@@ -14,6 +14,29 @@ int main(int argc, char *argv[]) {
     void *arg_table[] = {
             help = arg_litn(NULL, "help", 0, 1, "Display This Help And Exit"),
             version = arg_litn(NULL, "version", 0, 1, "Display Version Info And Exit"),
+    };
+
+    char name[] = "libjudger.so";
+
+    if (help->count > 0) {
+        printf("Usage: %s", name);
+        arg_print_syntax(stdout, arg_table, "\n\n");
+        arg_print_glossary(stdout, arg_table, "  %-25s %s\n");
+        goto exit;
+    }
+
+    if (version->count > 0) {
+        printf("Version: %d.%d.%d\n", (VERSION >> 16) & 0xff, (VERSION >> 8) & 0xff, VERSION & 0xff);
+        goto exit;
+    }
+
+    exit:
+    arg_freetable(arg_table, sizeof(arg_table) / sizeof(arg_table[0]));
+    return 0;
+}
+
+struct result judge(int argc, char *argv[]) {
+    void *arg_table[] = {
             max_cpu_time = arg_intn(NULL, "max_cpu_time", INT_PLACE_HOLDER, 0, 1, "Max CPU Time (ms)"),
             max_real_time = arg_intn(NULL, "max_real_time", INT_PLACE_HOLDER, 0, 1, "Max Real Time (ms)"),
             max_memory = arg_intn(NULL, "max_memory", INT_PLACE_HOLDER, 0, 1, "Max Memory (byte)"),
@@ -39,32 +62,20 @@ int main(int argc, char *argv[]) {
             end = arg_end(10),
     };
 
-    int exitcode = 0;
     char name[] = "libjudger.so";
 
     int nerrors = arg_parse(argc, argv, arg_table);
 
-    if (help->count > 0) {
-        printf("Usage: %s", name);
-        arg_print_syntax(stdout, arg_table, "\n\n");
-        arg_print_glossary(stdout, arg_table, "  %-25s %s\n");
-        goto exit;
-    }
-
-    if (version->count > 0) {
-        printf("Version: %d.%d.%d\n", (VERSION >> 16) & 0xff, (VERSION >> 8) & 0xff, VERSION & 0xff);
-        goto exit;
-    }
+    struct result _result = {0, 0, 0, 0, 0, 0, 0};
 
     if (nerrors > 0) {
         arg_print_errors(stdout, end, name);
         printf("Try '%s --help' for more information.\n", name);
-        exitcode = 1;
+        _result.error = INVALID_CONFIG;
         goto exit;
     }
 
     struct config _config;
-    struct result _result = {0, 0, 0, 0, 0, 0, 0};
 
     if (max_cpu_time->count > 0) {
         _config.max_cpu_time = *max_cpu_time->ival;
@@ -188,5 +199,5 @@ int main(int argc, char *argv[]) {
 
     exit:
     arg_freetable(arg_table, sizeof(arg_table) / sizeof(arg_table[0]));
-    return exitcode;
+    return _result;
 }
