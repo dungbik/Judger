@@ -46,7 +46,7 @@ struct result judge(int argc, char *argv[]) {
             max_output_size = arg_intn(NULL, "max_output_size", INT_PLACE_HOLDER, 0, 1, "Max Output Size (byte)"),
 
             exe_path = arg_str1(NULL, "exe_path", STR_PLACE_HOLDER, "Exe Path"),
-            input_path = arg_strn(NULL, "input_path", STR_PLACE_HOLDER, 0, 1, "Input Path"),
+            input_path = arg_strn(NULL, "input", STR_PLACE_HOLDER, 0, 255, "Input"),
             output_path = arg_strn(NULL, "output_path", STR_PLACE_HOLDER, 0, 1, "Output Path"),
             error_path = arg_strn(NULL, "error_path", STR_PLACE_HOLDER, 0, 1, "Error Path"),
 
@@ -121,11 +121,14 @@ struct result judge(int argc, char *argv[]) {
 
     _config.exe_path = (char *)*exe_path->sval;
 
+    int i = 0;
     if (input_path->count > 0) {
-        _config.input_path = (char *)input_path->sval[0];
-    } else {
-        _config.input_path = "/dev/stdin";
+        for (; i < input_path->count; i++) {
+            _config.input_path[i] = (char *)input_path->sval[i];
+        }
     }
+    _config.input_path[i] = NULL;
+
     if (output_path->count > 0) {
         _config.output_path = (char *)output_path->sval[0];
     } else {
@@ -138,7 +141,7 @@ struct result judge(int argc, char *argv[]) {
     }
 
     _config.args[0] = _config.exe_path;
-    int i = 1;
+    i = 1;
     if (args->count > 0) {
         for (; i < args->count + 1; i++) {
             _config.args[i] = (char *)args->sval[i - 1];
