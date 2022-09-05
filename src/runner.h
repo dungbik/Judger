@@ -21,7 +21,7 @@
 
 #define ARGS_MAX_NUMBER 256
 #define ENV_MAX_NUMBER 256
-
+#define INPUT_MAX_NUMBER 256
 
 enum {
     SUCCESS = 0,
@@ -48,7 +48,7 @@ struct config {
     long max_output_size;
     int memory_limit_check_only;
     char *exe_path;
-    char *input_path;
+    char *input_path[INPUT_MAX_NUMBER];
     char *output_path;
     char *error_path;
     char *args[ARGS_MAX_NUMBER];
