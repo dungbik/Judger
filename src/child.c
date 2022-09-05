@@ -86,13 +86,15 @@ void child_process(FILE *log_fp, struct config *_config) {
         if (input_file == NULL) {
             CHILD_ERROR_EXIT(DUP2_FAILED);
         }
+
+        fprintf(stdin, "%s", _config->input_path);
         // redirect file -> stdin
         // On success, these system calls return the new descriptor.
         // On error, -1 is returned, and errno is set appropriately.
-        if (dup2(fileno(input_file), fileno(stdin)) == -1) {
-            // todo log
-            CHILD_ERROR_EXIT(DUP2_FAILED);
-        }
+        // if (dup2(fileno(input_file), fileno(stdin)) == -1) {
+        //     // todo log
+        //     CHILD_ERROR_EXIT(DUP2_FAILED);
+        // }
     }
 
     if (_config->output_path != NULL) {
