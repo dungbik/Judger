@@ -82,10 +82,10 @@ void child_process(FILE *log_fp, struct config *_config) {
     }
 
     if (_config->input_path != NULL) {
-        input_file = fopen(_config->input_path, "r");
-        if (input_file == NULL) {
-            CHILD_ERROR_EXIT(DUP2_FAILED);
-        }
+        // input_file = fopen(_config->input_path, "r");
+        // if (input_file == NULL) {
+        //     CHILD_ERROR_EXIT(DUP2_FAILED);
+        // }
 
         fprintf(stdin, "%s", _config->input_path);
         // redirect file -> stdin
