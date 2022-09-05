@@ -46,7 +46,7 @@ struct result judge(int argc, char *argv[]) {
             max_output_size = arg_intn(NULL, "max_output_size", INT_PLACE_HOLDER, 0, 1, "Max Output Size (byte)"),
 
             exe_path = arg_str1(NULL, "exe_path", STR_PLACE_HOLDER, "Exe Path"),
-            input_path = arg_strn(NULL, "input", STR_PLACE_HOLDER, 0, 255, "Input"),
+            input_path = arg_strn(NULL, "input_path", STR_PLACE_HOLDER, 0, 255, "Input"),
             output_path = arg_strn(NULL, "output_path", STR_PLACE_HOLDER, 0, 1, "Output Path"),
             error_path = arg_strn(NULL, "error_path", STR_PLACE_HOLDER, 0, 1, "Error Path"),
 

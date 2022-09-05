@@ -88,7 +88,7 @@ void child_process(FILE *log_fp, struct config *_config) {
         }
         int i = 0;
         while (_config->input_path[i] != NULL) {
-            fprintf(input_file, "%s", _config->input_path[i++]);
+            fprintf(input_file, "%s\n", _config->input_path[i++]);
         }
         rewind(input_file);
         // redirect file -> stdin
