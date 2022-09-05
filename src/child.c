@@ -90,6 +90,7 @@ void child_process(FILE *log_fp, struct config *_config) {
         while (_config->input_path[i] != NULL) {
             fprintf(input_file, "%s", _config->input_path[i++]);
         }
+        rewind(input_file);
         // redirect file -> stdin
         // On success, these system calls return the new descriptor.
         // On error, -1 is returned, and errno is set appropriately.
